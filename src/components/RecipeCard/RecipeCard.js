@@ -1,7 +1,17 @@
 import React from "react";
 import "./RecipeCard.css";
+import store, {DELETE_RECIPE} from '../../store'
+
+function deleteItem(index){
+  console.log('hit first part of function call')
+  store.dispatch({
+    type: DELETE_RECIPE,
+    payload: index
+  })
+}
 
 let RecipeCard = props => {
+  console.log(props)
   const {
     name,
     category,
@@ -40,6 +50,7 @@ let RecipeCard = props => {
         viewBox="0 0 60 60"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        onClick = {() => deleteItem(props.index)}
       >
         <path
           d="M2.35352 57.3536L57.3535 3.3409M2.35352 2.64648L57.3535 56.6592"

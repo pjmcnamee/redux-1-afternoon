@@ -2,13 +2,30 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import RecipeCard from "./../RecipeCard/RecipeCard";
 import "./Home.css";
+import store, { RESTART_RECIPE } from '../../store'
 
 class Home extends Component {
   constructor(props) {
     super(props);
+    const reduxState = store.getState()
     this.state = {
-      recipes: []
+      recipes: reduxState.recipes
     };
+  }
+
+  restartRecipe = () => {
+    store.dispatch({
+      type: RESTART_RECIPE
+    })
+  }
+
+  componentDidMount(){
+    store.subscribe(() => {
+      const reduxState = store.getState()
+      this.setState({
+        recipes: reduxState.recipes
+      })
+    })
   }
 
   render() {
@@ -16,6 +33,7 @@ class Home extends Component {
       return (
         <RecipeCard
           key={i}
+          index={i}
           name={recipe.name}
           category={recipe.category}
           authorFirst={recipe.authorFirst}
@@ -28,7 +46,7 @@ class Home extends Component {
     return (
       <div className="Home">
         <Link to="/add/name">
-          <button>Create New Recipe</button>
+          <button onClick={() => this.restartRecipe()}>Create New Recipe</button>
         </Link>
         <div className="card_container">{recipes}</div>
       </div>
